@@ -13,13 +13,13 @@ class Stopwatch extends Component {
     }
   }
 
-  // マウントしたとき
+  // マウントする直前
   componentWillMount () {
     this.time_count = 0
     this.timer_id = 0
   }
 
-  // アンマウントしたとき
+  // アンマウントする直前
   componentWillUnmount () {
     clearInterval(this.timer_id)
   }
