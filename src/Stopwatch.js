@@ -8,7 +8,7 @@ class Stopwatch extends Component {
   constructor(props){
     super(props)
     this.state = { // 初期値を設定
-      stoped: false,
+      started: false,
       time_str: '00:00:00'
     }
   }
@@ -50,7 +50,7 @@ class Stopwatch extends Component {
 
   // タイマースタート
   timerStart () {
-    this.setState({stoped: true})
+    this.setState({started: true})
     this.timer_id = setInterval(e => {
       if(this.time_count === MAX_TIME_COUNT){
         this.timerStop()
@@ -64,7 +64,7 @@ class Stopwatch extends Component {
   // タイマーストップ
   timerStop () {
     clearInterval(this.timer_id)
-    this.setState({stoped: false})
+    this.setState({started: false})
   }
 
   // タイマーリセット
@@ -84,12 +84,12 @@ class Stopwatch extends Component {
       </span>
       <br/>
       { //停止状態ならSTARTボタン,RESETボタンを表示
-        this.state.stoped === false &&
+        this.state.started === false &&
         [<button onClick={(e)=>this.startClickHandler(e)}>START</button>,
          <button onClick={(e)=>this.resetClickHandler(e)}>RESET</button>]
       }
       { //稼働状態ならSTOPボタンを表示
-        this.state.stoped === true &&
+        this.state.started === true &&
         <button onClick={(e)=>this.stopClickHandler(e)}>STOP</button>
       }
     </div>
