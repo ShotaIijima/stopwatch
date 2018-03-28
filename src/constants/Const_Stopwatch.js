@@ -1,0 +1,1 @@
+export const MAX_TIME_COUNT = 99 * 3600 + 99 * 60 + 99
