@@ -1,30 +1,33 @@
 import React, { Component } from 'react'
-import { MAX_TIME_COUNT } from './constants/Const_Stopwatch'
-import mk2digit from './utils/str_tools'
+import MAX_TIME_COUNT from './conf/conf'
+import mk2digit from './util/str_util'
 import './Stopwatch.css'
 
 // Stopwatchコンポーネントを定義
 class Stopwatch extends Component {
+  constructor(props){
+    super(props)
+    this.state = { // 初期値を設定
+      stoped: false,
+      time_str: '00:00:00'
+    }
+  }
 
   // マウントしたとき
   componentWillMount () {
-    this.state = { // 初期値を設定
-      isLive: false,
-      time_str: '00:00:00'
-    }
-    this.timeCount = 0
-    this.timerId = 0
+    this.time_count = 0
+    this.timer_id = 0
   }
 
   // アンマウントしたとき
   componentWillUnmount () {
-    clearInterval(this.timerId)
+    clearInterval(this.timer_id)
   }
 
   setTime () {
-    var hour = mk2digit(Math.floor(this.timeCount / 3600))
-    var minute = mk2digit(Math.floor((this.timeCount % 3600) / 60))
-    var second = mk2digit((this.timeCount % 3600) % 60)
+    var hour = mk2digit(Math.floor(this.time_count / 3600))
+    var minute = mk2digit(Math.floor((this.time_count % 3600) / 60))
+    var second = mk2digit((this.time_count % 3600) % 60)
     this.setState({
       time_str: `${hour}:${minute}:${second}`
     })
@@ -47,26 +50,26 @@ class Stopwatch extends Component {
 
   // タイマースタート
   timerStart () {
-    this.setState({isLive: true})
-    this.timerId = setInterval(e => {
-      if(this.timeCount === MAX_TIME_COUNT){
+    this.setState({stoped: true})
+    this.timer_id = setInterval(e => {
+      if(this.time_count === MAX_TIME_COUNT){
         this.timerStop()
         return
       }
-      this.timeCount += 1
+      this.time_count += 1
       this.setTime()
     }, 1000)
   }
 
   // タイマーストップ
   timerStop () {
-    clearInterval(this.timerId)
-    this.setState({isLive: false})
+    clearInterval(this.timer_id)
+    this.setState({stoped: false})
   }
 
   // タイマーリセット
   timerReset () {
-    this.timeCount = 0
+    this.time_count = 0
     this.setState({
       time_str: '00:00:00'
     })
@@ -81,12 +84,12 @@ class Stopwatch extends Component {
       </span>
       <br/>
       { //停止状態ならSTARTボタン,RESETボタンを表示
-        this.state.isLive === false &&
+        this.state.stoped === false &&
         [<button onClick={(e)=>this.startClickHandler(e)}>START</button>,
          <button onClick={(e)=>this.resetClickHandler(e)}>RESET</button>]
       }
       { //稼働状態ならSTOPボタンを表示
-        this.state.isLive === true &&
+        this.state.stoped === true &&
         <button onClick={(e)=>this.stopClickHandler(e)}>STOP</button>
       }
     </div>
