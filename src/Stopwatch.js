@@ -75,7 +75,7 @@ class Stopwatch extends Component {
     })
   }
 
-  // 画面描画 --- (※7)
+  // 画面描画
   render () {
     return (
     <div className='Stopwatch'>
